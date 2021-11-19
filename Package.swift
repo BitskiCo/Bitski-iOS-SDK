@@ -7,15 +7,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "bitski-ios-sdk",
+    name: "Bitski-iOS-SDK",
     platforms: [
         .iOS(.v12)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "bitski-ios-sdk",
-            targets: ["bitski-ios-sdk"]),
+            name: "Bitski-iOS-SDK",
+            targets: ["Bitski-iOS-SDK"]),
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -31,7 +31,7 @@ let package = Package(
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .target(
-            name: "bitski-ios-sdk",
+            name: "Bitski-iOS-SDK",
             dependencies: [
                 .product(name: "Web3", package: "Web3"),
                 .product(name: "Web3PromiseKit", package: "Web3"),
@@ -40,9 +40,9 @@ let package = Package(
                 .product(name: "BigInt", package: "BigInt")
             ]),
         .testTarget(
-            name: "bitski-ios-sdkTests",
+            name: "Bitski-iOS-SDKTests",
             dependencies: [
-                "bitski-ios-sdk",
+                "Bitski-iOS-SDK",
                 .product(name: "Web3", package: "Web3"),
                 .product(name: "Web3PromiseKit", package: "Web3"),
                 .product(name: "Web3ContractABI", package: "Web3"),
