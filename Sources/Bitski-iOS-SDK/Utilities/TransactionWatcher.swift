@@ -10,6 +10,7 @@ import Foundation
 import PromiseKit
 import Web3
 import Web3ContractABI
+import Web3PromiseKit
 
 /// A class that will receive updates about a transaction.
 public protocol TransactionWatcherDelegate: class {
