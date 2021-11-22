@@ -8,8 +8,9 @@
 
 import Foundation
 import OHHTTPStubs
+import OHHTTPStubsSwift
 
-public func isMethod(_ method: String) -> OHHTTPStubsTestBlock {
+public func isMethod(_ method: String) -> HTTPStubsTestBlock {
     return { request in
         if let body = request.ohhttpStubs_httpBody, let jsonBody = ((try? JSONSerialization.jsonObject(with: body, options: []) as? [String: Any]) as [String : Any]??), let requestMethod = jsonBody?["method"] as? String {
             return requestMethod == method
@@ -18,7 +19,7 @@ public func isMethod(_ method: String) -> OHHTTPStubsTestBlock {
     }
 }
 
-public extension OHHTTPStubsResponse {
+public extension HTTPStubsResponse {
     convenience init(jsonFileNamed filename: String) {
         self.init(fileAtPath: OHPathForFile(filename, Tests.self)!, statusCode: 200, headers: ["Content-Type": "application/json"])
     }

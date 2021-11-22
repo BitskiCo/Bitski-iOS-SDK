@@ -1,7 +1,8 @@
 import XCTest
 import Web3
 import OHHTTPStubs
-@testable import Bitski
+import Bitski_iOS_SDK
+import Web3ContractABI
 
 class Tests: XCTestCase {
     
@@ -17,7 +18,7 @@ class Tests: XCTestCase {
     }
     
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        //OHHTTPStubs.removeAllStubs()
         bitski?.signOut()
         super.tearDown()
     }

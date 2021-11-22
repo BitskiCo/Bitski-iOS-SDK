@@ -22,7 +22,7 @@ class TransactionSignerTests: XCTestCase {
     }
 
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        //OHHTTPStubs.removeAllStubs()
         authDelegate = nil
     }
     

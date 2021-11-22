@@ -47,7 +47,7 @@ let package = Package(
                 .product(name: "Web3PromiseKit", package: "Web3"),
                 .product(name: "Web3ContractABI", package: "Web3"),
                 .product(name: "AppAuth", package: "AppAuth"),
-                .product(name: "OHHTTPStubs", package: "OHHTTPStubs")
+                .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")
             ]),
     ]
 )
