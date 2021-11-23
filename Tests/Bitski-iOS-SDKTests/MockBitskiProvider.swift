@@ -9,6 +9,7 @@
 import Foundation
 import Web3
 @testable import Bitski_iOS_SDK
+import PromiseKit
 
 class StubbedTransactionSigner: TransactionSigner {
     

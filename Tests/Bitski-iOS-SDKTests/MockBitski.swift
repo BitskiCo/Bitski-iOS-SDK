@@ -8,6 +8,7 @@
 
 import Foundation
 import AppAuth
+import WebKit
 @testable import Bitski_iOS_SDK
 
 /// Mock Bitski that injects our mock auth agent
@@ -18,7 +19,7 @@ class MockBitski: Bitski {
         self.providerClass = MockBitskiProvider.self
     }
     
-    override func signIn(configuration: OIDServiceConfiguration, agent: OIDExternalUserAgent, completion: @escaping ((Error?) -> Void)) {
-        super.signIn(configuration: configuration, agent: BitskiAuthenticationAgent(authenticationSessionType: MockAuthenticationWebSession.self), completion: completion)
+    override func signIn(webView: WKWebView,configuration: OIDServiceConfiguration, agent: OIDExternalUserAgent = BitskiAuthenticationAgent(), completion: @escaping ((Error?) -> Void)) {
+        super.signIn(webView: webView,configuration: configuration, agent: BitskiAuthenticationAgent(authenticationSessionType: MockAuthenticationWebSession.self), completion: completion)
     }
 }
