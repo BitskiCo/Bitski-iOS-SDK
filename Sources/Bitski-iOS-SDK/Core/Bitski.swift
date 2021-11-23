@@ -9,6 +9,7 @@
 import AppAuth
 import Web3
 import PromiseKit
+import WebKit
 
 
 /// An instance of the Bitski SDK
@@ -186,14 +187,14 @@ public class Bitski: NSObject, BitskiAuthDelegate {
     /// - Parameters:
     ///   - viewController: viewController to present web interface from
     ///   - completion: A closure called after sign in that includes an optional error
-    public func signIn(completion: @escaping ((Error?) -> Void)) {
+    public func signIn(webView: WKWebView,completion: @escaping ((Error?) -> Void)) {
         if let authState = getAuthState(), authState.isAuthorized {
             completion(nil)
             return
         }
         getConfiguration { configuration, error in
             if let configuration = configuration {
-                self.signIn(configuration: configuration, completion: completion)
+                self.signIn(webView: webView,configuration: configuration, completion: completion)
             } else if let error = error {
                 completion(error)
             }
@@ -277,7 +278,7 @@ public class Bitski: NSObject, BitskiAuthDelegate {
     /// - Parameters:
     ///   - configuration: configuration object for the authorization session
     ///   - completion: A closure called on completion that contains an optional error
-    func signIn(configuration: OIDServiceConfiguration, agent: OIDExternalUserAgent = BitskiAuthenticationAgent(), completion: @escaping ((Error?) -> Void)) {
+    func signIn(webView: WKWebView,configuration: OIDServiceConfiguration, agent: OIDExternalUserAgent = BitskiAuthenticationAgent(), completion: @escaping ((Error?) -> Void)) {
         authorizationFlowSession?.cancel()
         
         let request = OIDAuthorizationRequest(
@@ -289,7 +290,10 @@ public class Bitski: NSObject, BitskiAuthDelegate {
             responseType: OIDResponseTypeCode,
             additionalParameters: nil
         )
-        authorizationFlowSession = OIDAuthState.authState(byPresenting: request, externalUserAgent: agent) { authState, error in
+        
+        let webKitAgent = BitskiWebKitAgent(webView: webView)
+        
+        authorizationFlowSession = OIDAuthState.authState(byPresenting: request, externalUserAgent: webKitAgent) { authState, error in
             self.setAuthState(authState)
             if authState != nil {
                 completion(nil)

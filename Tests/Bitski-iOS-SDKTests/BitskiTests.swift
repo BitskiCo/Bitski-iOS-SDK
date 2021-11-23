@@ -10,6 +10,7 @@ import XCTest
 import Web3
 import AppAuth
 import OHHTTPStubs
+import WebKit
 @testable import Bitski_iOS_SDK
 
 final class Bitski_iOS_SDKTests: XCTestCase {
@@ -83,7 +84,7 @@ final class Bitski_iOS_SDKTests: XCTestCase {
         let url = URL(string: "bitskiexample://application/callback")!
         bitski = MockBitski(clientID: "test-id", redirectURL: url)
         let promise = expectation(description: "Sign in is completed")
-        bitski.signIn() { error in
+        bitski.signIn(webView: WKWebView()) { error in
             XCTAssertNil(error)
             XCTAssertTrue(self.bitski.isLoggedIn)
             let authState = self.bitski.getAuthState()

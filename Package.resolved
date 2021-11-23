@@ -20,15 +20,6 @@
         }
       },
       {
-        "package": "BigInt",
-        "repositoryURL": "https://github.com/Boilertalk/BigInt.swift.git",
-        "state": {
-          "branch": null,
-          "revision": "fd9b2ebff53e7fd211a7d2b2ea682db300a8571b",
-          "version": "1.0.0"
-        }
-      },
-      {
         "package": "CryptoSwift",
         "repositoryURL": "https://github.com/krzyzanowskim/CryptoSwift.git",
         "state": {

@@ -3,6 +3,7 @@ import Web3
 import OHHTTPStubs
 import Bitski_iOS_SDK
 import Web3ContractABI
+import WebKit
 
 class Tests: XCTestCase {
     
@@ -34,7 +35,7 @@ class Tests: XCTestCase {
         let logInExpectation = expectation(description: "Should be able to log in")
         transferEventExpectation = expectation(description: "Should receive Transfer event")
         transferSuccessfulExpectation = expectation(description: "Should receieve confirmations for transaction")
-        bitski.signIn() { error in
+        bitski.signIn(webView: WKWebView()) { error in
             logInExpectation.fulfill()
             XCTAssertNil(error, "Log in should not return an error")
             let web3 = self.bitski.getWeb3(network: .kovan)

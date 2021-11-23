@@ -23,7 +23,6 @@ let package = Package(
                  url: "https://github.com/Boilertalk/Web3.swift",
                  from: "0.5.0"),
         .package(name: "AppAuth",url: "https://github.com/openid/AppAuth-iOS.git", .upToNextMajor(from: "1.3.0")),
-        .package(name: "BigInt",url: "https://github.com/Boilertalk/BigInt.swift.git", from: "1.0.0"),
         .package(name: "secp256k1",url: "https://github.com/Boilertalk/secp256k1.swift.git", from: "0.1.4"),
         .package(name: "OHHTTPStubs",url: "https://github.com/AliSoftware/OHHTTPStubs.git", from: "9.1.0")
     ],
@@ -36,8 +35,7 @@ let package = Package(
                 .product(name: "Web3", package: "Web3"),
                 .product(name: "Web3PromiseKit", package: "Web3"),
                 .product(name: "Web3ContractABI", package: "Web3"),
-                .product(name: "AppAuth", package: "AppAuth"),
-                .product(name: "BigInt", package: "BigInt")
+                .product(name: "AppAuth", package: "AppAuth")
             ]),
         .testTarget(
             name: "Bitski-iOS-SDKTests",
