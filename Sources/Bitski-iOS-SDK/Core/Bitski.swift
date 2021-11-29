@@ -273,6 +273,15 @@ public class Bitski: NSObject, BitskiAuthDelegate {
         }
     }
     
+    public func handleCallBack(url: URL?)  {
+        if let url = url {
+            self.authorizationFlowSession?.resumeExternalUserAgentFlow(with: url)
+        } else {
+            let error = NSError(domain: "com.bitski.bitski-ios-sdk", code: 500, userInfo: [NSLocalizedDescriptionKey: "Handle callback with \(String(describing: url))"])
+            self.authorizationFlowSession?.failExternalUserAgentFlowWithError(error as Error)
+        }
+    }
+    
     /// Performs the sign in request
     ///
     /// - Parameters:
@@ -285,7 +294,7 @@ public class Bitski: NSObject, BitskiAuthDelegate {
             configuration: configuration,
             clientId: clientID,
             clientSecret: nil,
-            scopes: [OIDScopeOpenID, "offline"],
+            scopes: [OIDScopeOpenID, "offline", OIDScopeProfile, OIDScopeEmail,OIDScopePhone, "account", "apps"],
             redirectURL: redirectURL,
             responseType: OIDResponseTypeCode,
             additionalParameters: nil
