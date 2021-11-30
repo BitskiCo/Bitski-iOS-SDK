@@ -294,7 +294,7 @@ public class Bitski: NSObject, BitskiAuthDelegate {
             configuration: configuration,
             clientId: clientID,
             clientSecret: nil,
-            scopes: [OIDScopeOpenID, "offline", OIDScopeProfile, OIDScopeEmail,OIDScopePhone, "account", "apps"],
+            scopes: [OIDScopeOpenID, "offline",OIDScopePhone, "account"],
             redirectURL: redirectURL,
             responseType: OIDResponseTypeCode,
             additionalParameters: nil
