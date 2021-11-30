@@ -32,7 +32,7 @@ public class TransactionSigner: NetworkClient {
     let redirectURL: URL
     
     /// The current BitskiAuthorizationAgent for requests requiring authorization (must be retained).
-    private var currentAuthAgent: BitskiWebkitAuthorizationAgent?
+    private var currentAuthAgent: BitskiAuthorizationAgent?
     
     /// Delegate to provide up to date access tokens for each request
     weak var authDelegate: BitskiAuthDelegate?
@@ -92,8 +92,8 @@ public class TransactionSigner: NetworkClient {
     
     /// Creates a BitskiAuthorizationAgent
     /// Note: This is used in the tests to create a mock agent
-    func createAuthorizationAgent() -> BitskiWebkitAuthorizationAgent {
-        return BitskiWebkitAuthorizationAgent(baseURL: self.webBaseURL, redirectURL: self.redirectURL)
+    func createAuthorizationAgent() -> BitskiAuthorizationAgent {
+        return BitskiAuthorizationAgent(baseURL: self.webBaseURL, redirectURL: self.redirectURL)
     }
     
     /// Retrieve an access token from the server

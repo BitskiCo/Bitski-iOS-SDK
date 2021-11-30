@@ -14,7 +14,7 @@ class MockTransactionSigner: TransactionSigner {
     
     var authAgentType: AuthorizationSessionProtocol.Type = MockTransactionWebSession.self
     
-    override func createAuthorizationAgent() -> BitskiWebkitAuthorizationAgent {
+    override func createAuthorizationAgent() -> BitskiAuthorizationAgent {
         let agent = super.createAuthorizationAgent()
         agent.authorizationSessionType = authAgentType
         return agent
