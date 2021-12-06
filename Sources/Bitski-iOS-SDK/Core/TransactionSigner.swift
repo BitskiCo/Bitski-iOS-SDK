@@ -8,6 +8,7 @@
 import Foundation
 import PromiseKit
 import Web3
+import SafariServices
 
 /// A class that is responsible for mediating signature requests from your app to the user.
 /// You should not need to create an instance yourself, but rather use its methods via the Bitski instance.
@@ -34,6 +35,8 @@ public class TransactionSigner: NetworkClient {
     /// The current BitskiAuthorizationAgent for requests requiring authorization (must be retained).
     private var currentAuthAgent: BitskiAuthorizationAgent?
     
+    private var authorizationClass: AuthorizationSessionProtocol.Type
+    
     /// Delegate to provide up to date access tokens for each request
     weak var authDelegate: BitskiAuthDelegate?
     
@@ -44,10 +47,11 @@ public class TransactionSigner: NetworkClient {
     ///   - webBaseURL: The base URL for the Bitski signer website
     ///   - redirectURL: This app's registered redirect url
     ///   - session: (optional) A custom URLSession to use for requests
-    required public init(apiBaseURL: URL, webBaseURL: URL, redirectURL: URL, session: URLSession = URLSession(configuration: .default)) {
+    required public init(apiBaseURL: URL, webBaseURL: URL, redirectURL: URL, session: URLSession = URLSession(configuration: .default), authorizationClass: AuthorizationSessionProtocol.Type = SFAuthenticationSession.self) {
         self.apiBaseURL = apiBaseURL
         self.webBaseURL = webBaseURL
         self.redirectURL = redirectURL
+        self.authorizationClass = authorizationClass
         super.init(session: session)
     }
     
@@ -93,7 +97,7 @@ public class TransactionSigner: NetworkClient {
     /// Creates a BitskiAuthorizationAgent
     /// Note: This is used in the tests to create a mock agent
     func createAuthorizationAgent() -> BitskiAuthorizationAgent {
-        return BitskiAuthorizationAgent(baseURL: self.webBaseURL, redirectURL: self.redirectURL)
+        return BitskiAuthorizationAgent(baseURL: self.webBaseURL, redirectURL: self.redirectURL, authorizationClass: self.authorizationClass)
     }
     
     /// Retrieve an access token from the server
