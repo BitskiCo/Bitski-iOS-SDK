@@ -9,8 +9,9 @@ import Foundation
 import SafariServices
 import Web3
 import PromiseKit
+import SafariServices
 
-protocol AuthorizationSessionProtocol {
+public protocol AuthorizationSessionProtocol {
     init(url: URL, callbackURLScheme: String?, completionHandler: @escaping (URL?, Error?) -> Void)
     @discardableResult func start() -> Bool
     func cancel()

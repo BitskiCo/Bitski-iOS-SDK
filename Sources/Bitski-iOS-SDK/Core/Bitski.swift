@@ -10,6 +10,7 @@ import AppAuth
 import Web3
 import PromiseKit
 import WebKit
+import SafariServices
 
 
 /// An instance of the Bitski SDK
@@ -169,10 +170,10 @@ public class Bitski: NSObject, BitskiAuthDelegate {
     /// - Parameters:
     ///   - clientID: Your client ID. From https://developer.bitski.com
     ///   - redirectURL: URI for redirects back to the app. This must be a URI your app can handle (ie. myapp://application/callback).
-    public init(clientID: String, redirectURL: URL) {
+    public init(clientID: String, redirectURL: URL,authorizationClass: AuthorizationSessionProtocol.Type = SFAuthenticationSession.self) {
         self.clientID = clientID
         self.redirectURL = redirectURL
-        self.signer = TransactionSigner(apiBaseURL: apiBaseURL, webBaseURL: webBaseURL, redirectURL: redirectURL)
+        self.signer = TransactionSigner(apiBaseURL: apiBaseURL, webBaseURL: webBaseURL, redirectURL: redirectURL, authorizationClass: authorizationClass)
         self._authToken = ""
         super.init()
         self.signer.authDelegate = self
