@@ -8,6 +8,7 @@
 
 import Foundation
 import Web3
+import SafariServices
 @testable import Bitski_iOS_SDK
 import PromiseKit
 
@@ -28,7 +29,7 @@ class StubbedTransactionSigner: TransactionSigner {
         super.init(apiBaseURL: apiBaseURL, webBaseURL: webBaseURL, redirectURL: redirectURL, session: session)
     }
     
-    required init(apiBaseURL: URL, webBaseURL: URL, redirectURL: URL, session: URLSession = URLSession(configuration: .default)) {
+    required init(apiBaseURL: URL, webBaseURL: URL, redirectURL: URL, session: URLSession = URLSession(configuration: .default), authorizationClass: AuthorizationSessionProtocol.Type = SFAuthenticationSession.self) {
         fatalError("Not implemented")
     }
     

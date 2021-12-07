@@ -9,13 +9,14 @@
 import Foundation
 import AppAuth
 import WebKit
+import SafariServices
 @testable import Bitski_iOS_SDK
 
 /// Mock Bitski that injects our mock auth agent
 class MockBitski: Bitski {
     
-    override init(clientID: String, redirectURL: URL) {
-        super.init(clientID: clientID, redirectURL: redirectURL)
+    override init(clientID: String, redirectURL: URL, authorizationClass: AuthorizationSessionProtocol.Type = SFAuthenticationSession.self) {
+        super.init(clientID: clientID, redirectURL: redirectURL, authorizationClass: authorizationClass)
         self.providerClass = MockBitskiProvider.self
     }
     
