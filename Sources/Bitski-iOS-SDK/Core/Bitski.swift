@@ -288,7 +288,7 @@ public class Bitski: NSObject, BitskiAuthDelegate {
     /// - Parameters:
     ///   - configuration: configuration object for the authorization session
     ///   - completion: A closure called on completion that contains an optional error
-    func signIn(webView: WKWebView,configuration: OIDServiceConfiguration, agent: OIDExternalUserAgent = BitskiAuthenticationAgent(), completion: @escaping ((Error?) -> Void)) {
+    func signIn(webView: WKWebView,configuration: OIDServiceConfiguration, agent: OIDExternalUserAgent = BitskiAuthenticationAgent(), additionalParameters: [String: String] = [:], completion: @escaping ((Error?) -> Void)) {
         authorizationFlowSession?.cancel()
         
         let request = OIDAuthorizationRequest(
@@ -298,7 +298,7 @@ public class Bitski: NSObject, BitskiAuthDelegate {
             scopes: [OIDScopeOpenID, "offline",OIDScopePhone, "account"],
             redirectURL: redirectURL,
             responseType: OIDResponseTypeCode,
-            additionalParameters: nil
+            additionalParameters: additionalParameters
         )
         
         let webKitAgent = BitskiWebKitAgent(webView: webView)

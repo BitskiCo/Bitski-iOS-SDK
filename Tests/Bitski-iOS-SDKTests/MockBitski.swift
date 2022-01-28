@@ -20,7 +20,7 @@ class MockBitski: Bitski {
         self.providerClass = MockBitskiProvider.self
     }
     
-    override func signIn(webView: WKWebView,configuration: OIDServiceConfiguration, agent: OIDExternalUserAgent = BitskiAuthenticationAgent(), completion: @escaping ((Error?) -> Void)) {
-        super.signIn(webView: webView,configuration: configuration, agent: BitskiAuthenticationAgent(authenticationSessionType: MockAuthenticationWebSession.self), completion: completion)
+    override func signIn(webView: WKWebView,configuration: OIDServiceConfiguration, agent: OIDExternalUserAgent = BitskiAuthenticationAgent(), additionalParameters: [String: String] = [:], completion: @escaping ((Error?) -> Void)) {
+        super.signIn(webView: webView,configuration: configuration, agent: BitskiAuthenticationAgent(authenticationSessionType: MockAuthenticationWebSession.self), additionalParameters: additionalParameters, completion: completion)
     }
 }
