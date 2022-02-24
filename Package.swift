@@ -50,6 +50,9 @@ let package = Package(
                 .product(name: "Web3ContractABI", package: "Web3"),
                 .product(name: "AppAuth", package: "AppAuth"),
                 .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")
+            ],
+            resources: [
+              .copy("Stubs/Responses"),
             ]),
     ]
 )

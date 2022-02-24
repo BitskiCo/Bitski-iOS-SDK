@@ -21,6 +21,6 @@ public func isMethod(_ method: String) -> HTTPStubsTestBlock {
 
 public extension HTTPStubsResponse {
     convenience init(jsonFileNamed filename: String) {
-        self.init(fileAtPath: OHPathForFile(filename, Tests.self)!, statusCode: 200, headers: ["Content-Type": "application/json"])
+        self.init(fileAtPath: OHPathForFileInBundle("Responses/" + filename, Bundle.module)!, statusCode: 200, headers: ["Content-Type": "application/json"])
     }
 }

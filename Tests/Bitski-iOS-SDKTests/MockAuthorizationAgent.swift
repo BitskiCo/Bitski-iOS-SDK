@@ -52,7 +52,7 @@ class MockJSONStubWebSession: AuthorizationSessionProtocol {
     let handler: () -> Void
     
     required init(url: URL, callbackURLScheme: String?, completionHandler: @escaping (URL?, Error?) -> Void) {
-        let path = OHPathForFile(type(of: self).stubName, type(of: self))!
+        let path = OHPathForFileInBundle("Responses/" + type(of: self).stubName, Bundle.module)!
         let data = try! Data.init(contentsOf: URL(fileURLWithPath: path))
         let url = URL(string: "bitskiexample://application/callback?result=\(data.base64EncodedString())")!
         self.handler = {
