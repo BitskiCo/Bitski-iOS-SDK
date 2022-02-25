@@ -16,7 +16,7 @@ class StubbedTransactionSigner: TransactionSigner {
     
     var lastSignRequest: (EthereumAddress, EthereumData)? = nil
     
-    var injectedSignResponse: EthereumData?
+    var injectedSignResponse: EthereumValue?
     
     var lastSignTransactionRequest: (EthereumTransaction, Bitski.Network)? = nil
 
@@ -35,7 +35,7 @@ class StubbedTransactionSigner: TransactionSigner {
     
     override func sign<Result>(transaction: EthereumTransaction, network: Bitski.Network = .mainnet) -> Promise<Result> where Result : Codable {
         lastSignTransactionRequest = (transaction, network)
-        if let response = injectedSignResponse as? Result {
+        if let response = injectedSignTransactionResponse as? Result {
             return Promise.value(response)
         }
         return Promise(error: NSError(domain: "com.bitski.bitski_tests", code: 500, userInfo: [NSLocalizedDescriptionKey: "User rejected"]))
@@ -43,7 +43,7 @@ class StubbedTransactionSigner: TransactionSigner {
     
     override func sign<Result>(from: EthereumAddress, message: EthereumData) -> Promise<Result> where Result : Codable {
         lastSignRequest = (from, message)
-        if let response = injectedSignTransactionResponse as? Result {
+        if let response = injectedSignResponse as? Result {
             return Promise.value(response)
         }
         return Promise(error: NSError(domain: "com.bitski.bitski_tests", code: 500, userInfo: [NSLocalizedDescriptionKey: "User rejected"]))

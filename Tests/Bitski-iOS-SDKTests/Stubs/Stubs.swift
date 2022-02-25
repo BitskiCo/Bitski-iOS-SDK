@@ -12,7 +12,7 @@ import OHHTTPStubsSwift
 
 extension HTTPStubsResponse {
     convenience init(jsonFileNamed filename: String, statusCode: Int, headers: [String: String]) {
-        self.init(fileAtPath: OHPathForFile(filename, BitskiTestStubs.self)!, statusCode: Int32(statusCode), headers: headers)
+        self.init(fileAtPath: OHPathForFileInBundle("Responses/" + filename, Bundle.module)!, statusCode: Int32(statusCode), headers: headers)
     }
 }
 

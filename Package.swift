@@ -9,7 +9,8 @@ import PackageDescription
 let package = Package(
     name: "Bitski-iOS-SDK",
     platforms: [
-        .iOS(.v12)
+        .iOS(.v12),
+        .macOS(.v10_12)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
@@ -36,6 +37,9 @@ let package = Package(
                 .product(name: "Web3PromiseKit", package: "Web3"),
                 .product(name: "Web3ContractABI", package: "Web3"),
                 .product(name: "AppAuth", package: "AppAuth")
+            ],
+            resources: [
+              .copy("WKWebView/BitskiWeb3Provider.js"),
             ]),
         .testTarget(
             name: "Bitski-iOS-SDKTests",
@@ -46,6 +50,9 @@ let package = Package(
                 .product(name: "Web3ContractABI", package: "Web3"),
                 .product(name: "AppAuth", package: "AppAuth"),
                 .product(name: "OHHTTPStubsSwift", package: "OHHTTPStubs")
+            ],
+            resources: [
+              .copy("Stubs/Responses"),
             ]),
     ]
 )
