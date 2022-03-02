@@ -43,7 +43,7 @@ public class BitskiHTTPProvider: NetworkClient, Web3Provider {
     let authenticatedMethods = ["eth_accounts", "eth_sign", "eth_sendTransaction", "eth_signTransaction", "eth_signTypedData", "eth_signTypedData_v4", "personal_sign"]
     
     /// Methods that require explicit approval from the user
-    let authorizedMethods = ["eth_sign", "eth_sendTransaction", "eth_signTransaction"]
+    let authorizedMethods = ["eth_sign", "eth_sendTransaction", "eth_signTransaction", "eth_signTypedData", "eth_signTypedData_v4", "personal_sign"]
     
     /// URL for JSON-RPC requests
     let rpcURL: URL
