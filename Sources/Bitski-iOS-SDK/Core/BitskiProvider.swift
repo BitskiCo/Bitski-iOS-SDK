@@ -197,7 +197,7 @@ public class BitskiHTTPProvider: NetworkClient, Web3Provider {
             }.compactMap { (rpcResponse: RPCResponse<Result>) -> Result? in
                 return rpcResponse.result
             }
-        case "eth_sign":
+        case "eth_sign", "eth_signTypedData", "eth_signTypedData_v4", "personal_sign":
             // Simply sign
             return signer.signMessage(request: request)
         default:
@@ -244,13 +244,13 @@ extension TransactionSigner {
             return Promise(error: SignerError.missingData)
         }
         
-        guard let message = params[1].ethereumData else {
+        guard let message = (request.method == "personal_sign" ? params[0].ethereumData : params[1].ethereumData) else {
             // Message param is not valid
             return Promise(error: SignerError.missingData)
         }
         
         do {
-            let from = try EthereumAddress(ethereumValue: params[0])
+            let from = try EthereumAddress(ethereumValue: (request.method == "personal_sign" ? params[1] : params[0]))
             return sign(from: from, message: message)
         } catch {
             // Some error forming an address from the params
