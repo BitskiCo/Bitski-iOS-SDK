@@ -40,7 +40,7 @@ public class BitskiHTTPProvider: NetworkClient, Web3Provider {
     // MARK: Instance Variable
     
     /// Methods that require an access token
-    let authenticatedMethods = ["eth_accounts", "eth_sign", "eth_sendTransaction", "eth_signTransaction", "eth_signTypedData", "eth_signTypedData_v4"]
+    let authenticatedMethods = ["eth_accounts", "eth_sign", "eth_sendTransaction", "eth_signTransaction", "eth_signTypedData", "eth_signTypedData_v4", "personal_sign"]
     
     /// Methods that require explicit approval from the user
     let authorizedMethods = ["eth_sign", "eth_sendTransaction", "eth_signTransaction"]
