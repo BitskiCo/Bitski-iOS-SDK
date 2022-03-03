@@ -248,10 +248,11 @@ extension TransactionSigner {
         
         do {
             let from = try EthereumAddress(ethereumValue: (request.method == "personal_sign" ? params[1] : params[0]))
-            if let typedData = message.string {
+            if let typedData = message.string, request.method.contains("signTypedData") {
                 return sign(from: from, typedData: typedData, method: request.method, chainId: chainId)
             } else if let message = message.ethereumData {
-                return sign(from: from, message: message, method: request.method, chainId: chainId)
+                // Convert everything to eth_sign
+                return sign(from: from, message: message, method: "eth_sign", chainId: chainId)
             } else {
                 return Promise(error: BitskiHTTPProvider.ProviderError.invalidRequest)
             }
