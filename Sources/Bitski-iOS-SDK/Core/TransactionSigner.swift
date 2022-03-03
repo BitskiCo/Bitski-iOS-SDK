@@ -64,9 +64,29 @@ public class TransactionSigner: NetworkClient {
     /// - Returns:
     ///     Promise<Result>. Generic for compatibility with Web3.swift. You should specialize the promise in
     ///     your implementation as Promise<EthereumData>.
-    public func sign<Result: Codable>(from: EthereumAddress, message: EthereumData) -> Promise<Result> {
+    public func sign<Result: Codable>(from: EthereumAddress, message: EthereumData, method: String = "eth_sign", chainId: Int = 0) -> Promise<Result> {
         let payload = MessageSignatureObject(from: from, message: message)
-        let transaction = BitskiTransaction(payload: payload, kind: .sign, chainId: 0)
+        let transaction = BitskiTransaction(payload: payload, kind: BitskiTransactionKind(methodName: method), chainId: chainId)
+        return firstly {
+            self.getAccessToken()
+        }.then { accessToken in
+            self.submitTransaction(transaction: transaction, accessToken: accessToken)
+        }.then { accessToken in
+            self.requestAuthorization(transaction: transaction)
+        }
+    }
+    
+    /// Signs typed data from the given account.
+    ///
+    /// - Parameters:
+    ///   - from: The account to sign from. This must be an account that the current user owns.
+    ///   - typedData: The JSON string to sign.
+    /// - Returns:
+    ///     Promise<Result>. Generic for compatibility with Web3.swift. You should specialize the promise in
+    ///     your implementation as Promise<EthereumData>.
+    public func sign<Result: Codable>(from: EthereumAddress, typedData: String, method: String = "eth_sign", chainId: Int = 0) -> Promise<Result> {
+        let payload = TypedDataMessageSignatureObject(from: from, typedData: typedData)
+        let transaction = BitskiTransaction(payload: payload, kind: BitskiTransactionKind.init(methodName: method), chainId: chainId)
         return firstly {
             self.getAccessToken()
         }.then { accessToken in

@@ -391,8 +391,20 @@ public extension Bitski {
     /// - Parameters:
     ///   - from: EthereumAddress to sign from. This must be an account the user owns.
     ///   - message: EthereumData representing the message to sign.
-    /// - Returns: A Promise that resolves with the raw transaction data as EthereumData.
+    /// - Returns: A Promise that resolves with the signature as EthereumData.
     func sign(from: EthereumAddress, message: EthereumData) -> Promise<EthereumData> {
         return signer.sign(from: from, message: message)
     }
+    
+    /// Ask the user to sign typed data. A modal window will be presented to the user, and they will
+    /// see the contents of the message on bitski.com.
+    ///
+    /// - Parameters:
+    ///   - from: EthereumAddress to sign from. This must be an account the user owns.
+    ///   - typedData: JSON string representing the message to sign.
+    /// - Returns: A Promise that resolves with the signature as EthereumData.
+    func sign(from: EthereumAddress, typedData: String) -> Promise<EthereumData> {
+        return signer.sign(from: from, typedData: typedData)
+    }
+
 }
