@@ -15,7 +15,8 @@ import PromiseKit
 class StubbedTransactionSigner: TransactionSigner {
     
     var lastSignRequest: (EthereumAddress, EthereumData)? = nil
-    
+    var lastTypedDataSignRequest: (EthereumAddress, String)? = nil
+
     var injectedSignResponse: EthereumData?
     
     var lastSignTransactionRequest: (EthereumTransaction, Bitski.Network)? = nil
@@ -41,13 +42,22 @@ class StubbedTransactionSigner: TransactionSigner {
         return Promise(error: NSError(domain: "com.bitski.bitski_tests", code: 500, userInfo: [NSLocalizedDescriptionKey: "User rejected"]))
     }
     
-    override func sign<Result>(from: EthereumAddress, message: EthereumData) -> Promise<Result> where Result : Codable {
+    override func sign<Result>(from: EthereumAddress, message: EthereumData, method: String = "eth_sign", chainId: Int = 0) -> Promise<Result> where Result : Codable {
         lastSignRequest = (from, message)
         if let response = injectedSignTransactionResponse as? Result {
             return Promise.value(response)
         }
         return Promise(error: NSError(domain: "com.bitski.bitski_tests", code: 500, userInfo: [NSLocalizedDescriptionKey: "User rejected"]))
     }
+    
+    override func sign<Result>(from: EthereumAddress, typedData: String, method: String = "eth_signTypedData", chainId: Int = 0) -> Promise<Result> where Result : Codable {
+        lastTypedDataSignRequest = (from, typedData)
+        if let response = injectedSignTransactionResponse as? Result {
+            return Promise.value(response)
+        }
+        return Promise(error: NSError(domain: "com.bitski.bitski_tests", code: 500, userInfo: [NSLocalizedDescriptionKey: "User rejected"]))
+    }
+
     
 }
 
