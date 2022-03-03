@@ -142,6 +142,13 @@ struct TypedDataMessageSignatureObject {
 }
 
 extension TypedDataMessageSignatureObject: Codable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let typedData = try container.decode(JSON.self)
+        let typedDataJSONData = try JSONEncoder().encode(typedData)
+        self = Self(from: try EthereumAddress.init(hex: "0x0000000000000000000000000000000000000000", eip55: false), typedData: String(data: typedDataJSONData, encoding: .utf8)!)
+    }
+
     func encode(to encoder: Encoder) throws {
         let json = try JSONDecoder().decode(JSON.self, from: self.typedData.data(using: .utf8)!)
         var container = encoder.singleValueContainer()

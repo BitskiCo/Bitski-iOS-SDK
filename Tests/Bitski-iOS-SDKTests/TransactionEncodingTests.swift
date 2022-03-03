@@ -62,4 +62,39 @@ class TransactionEncodingTests: XCTestCase {
         }
     }
     
+    func testDecodingTypedDataTransaction() {
+        let json = """
+        {
+          "clients": [
+            {
+              "client_id": "8cc43503-9ebd-4588-a77f-51ae160d6934",
+              "client_name": "Bitski",
+              "client_uri": "bitski://application/callback",
+              "logo_uri": "",
+              "owner": "8cc43503-9ebd-4588-a77f-51ae160d6934",
+              "policy_uri": " bitski://application/callback",
+              "tos_uri": " bitski://application/callback"
+            }
+          ],
+          "transaction": {
+            "clientId": "8cc43503-9ebd-4588-a77f-51ae160d6934",
+            "context": {
+              "chainId": 0
+            },
+            "id": "4e0d94e7-1802-4c5d-aea1-83991477bcfd",
+            "kind": "ETH_SIGN_TYPED_DATA",
+            "payload": {"types":{}},
+            "submitterId": "b8fbfbfe-0692-4e96-85a7-8833634a4538"
+          }
+        }
+        """;
+
+        do {
+            let response = try JSONDecoder().decode(BitskiTransactionResponse<TypedDataMessageSignatureObject>.self, from: json.data(using: .utf8)!)
+        } catch {
+            XCTFail((error as NSError).debugDescription)
+        }
+    }
+
+    
 }
