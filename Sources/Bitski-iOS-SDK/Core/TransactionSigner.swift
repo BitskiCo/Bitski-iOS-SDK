@@ -86,7 +86,7 @@ public class TransactionSigner: NetworkClient {
     ///     your implementation as Promise<EthereumData>.
     public func sign<Result: Codable>(from: EthereumAddress, typedData: String, method: String = "eth_sign", chainId: Int = 0) -> Promise<Result> {
         let payload = TypedDataMessageSignatureObject(from: from, typedData: typedData)
-        let transaction = BitskiTransaction(payload: payload, kind: BitskiTransactionKind.init(methodName: method), chainId: chainId)
+        let transaction = BitskiTransaction(payload: payload, kind: BitskiTransactionKind.init(methodName: method), chainId: chainId, from: from)
         return firstly {
             self.getAccessToken()
         }.then { accessToken in

@@ -83,6 +83,7 @@ struct BitskiTransaction<Payload: Codable>: Codable {
     struct Context: Codable {
         /// The chain id to sign with
         let chainId: Int
+        let from: EthereumAddress?
     }
             
     /// A unique id to represent this transaction
@@ -122,7 +123,7 @@ struct MessageSignatureObject: Codable {
     }
 }
 
-struct TypedDataMessageSignatureObject: Codable {
+struct TypedDataMessageSignatureObject {
     /// The address to sign the message from
     let from: EthereumAddress
     
@@ -140,11 +141,19 @@ struct TypedDataMessageSignatureObject: Codable {
     }
 }
 
+extension TypedDataMessageSignatureObject: Codable {
+    func encode(to encoder: Encoder) throws {
+        let json = try JSONDecoder().decode(JSON.self, from: self.typedData.data(using: .utf8)!)
+        var container = encoder.singleValueContainer()
+        try container.encode(json)
+    }
+}
+
 
 extension BitskiTransaction {
     
-    public init(payload: Payload, kind: BitskiTransactionKind, chainId: Int, id: UUID = UUID()) {
-        self.init(id: id, payload: payload, kind: kind, context: Context(chainId: chainId))
+    public init(payload: Payload, kind: BitskiTransactionKind, chainId: Int, id: UUID = UUID(), from: EthereumAddress? = nil) {
+        self.init(id: id, payload: payload, kind: kind, context: Context(chainId: chainId, from: from))
     }
     
 }
