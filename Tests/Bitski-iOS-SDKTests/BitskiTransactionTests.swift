@@ -21,16 +21,16 @@ class BitskiTransactionTests: XCTestCase {
     }
     
     func testTransactionKindMethodNames() {
-        let sendTransactionKind = BitskiTransaction<EthereumTransaction>.Kind(methodName: "eth_sendTransaction")
+        let sendTransactionKind = BitskiTransactionKind(methodName: "eth_sendTransaction")
         XCTAssertEqual(sendTransactionKind, .sendTransaction)
         
-        let signTransactionKind = BitskiTransaction<EthereumTransaction>.Kind(methodName: "eth_signTransaction")
+        let signTransactionKind = BitskiTransactionKind(methodName: "eth_signTransaction")
         XCTAssertEqual(signTransactionKind, .signTransaction)
         
-        let signKind = BitskiTransaction<MessageSignatureObject>.Kind(methodName: "eth_sign")
+        let signKind = BitskiTransactionKind(methodName: "eth_sign")
         XCTAssertEqual(signKind, .sign)
         
-        let arbitraryKind = BitskiTransaction<String>.Kind(methodName: "eth_accounts")
+        let arbitraryKind = BitskiTransactionKind(methodName: "eth_accounts")
         XCTAssertNil(arbitraryKind)
     }
 }
