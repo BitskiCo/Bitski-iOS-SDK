@@ -42,6 +42,12 @@ enum BitskiTransactionKind: Equatable {
 }
 
 extension BitskiTransactionKind: Codable {
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let methodName = try container.decode(String.self)
+        self = Self(methodName: methodName)
+    }
+
     func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
 
