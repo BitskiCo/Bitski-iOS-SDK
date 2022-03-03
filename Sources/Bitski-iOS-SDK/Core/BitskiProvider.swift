@@ -197,7 +197,7 @@ public class BitskiHTTPProvider: NetworkClient, Web3Provider {
             }.compactMap { (rpcResponse: RPCResponse<Result>) -> Result? in
                 return rpcResponse.result
             }
-        case "eth_sign":
+        case "eth_sign", "eth_signTypedData", "eth_signTypedData_v4", "personal_sign":
             // Simply sign
             return signer.signMessage(request: request)
         default:
@@ -233,7 +233,7 @@ extension TransactionSigner {
     ///
     /// - Parameter request: RPCRequest with the correct format for eth_sign
     /// - Returns: A Promise resolving with the result from the signer
-    func signMessage<Params, Result: Codable>(request: RPCRequest<Params>) -> Promise<Result> {
+    func signMessage<Params, Result: Codable>(request: RPCRequest<Params>, chainId: Int = 0) -> Promise<Result> {
         guard let value = request.params as? EthereumValue else {
             // Params are unexpected format
             return Promise(error: SignerError.missingData)
@@ -244,14 +244,17 @@ extension TransactionSigner {
             return Promise(error: SignerError.missingData)
         }
         
-        guard let message = params[1].ethereumData else {
-            // Message param is not valid
-            return Promise(error: SignerError.missingData)
-        }
+        let message = (request.method == "personal_sign" ? params[0] : params[1])
         
         do {
-            let from = try EthereumAddress(ethereumValue: params[0])
-            return sign(from: from, message: message)
+            let from = try EthereumAddress(ethereumValue: (request.method == "personal_sign" ? params[1] : params[0]))
+            if let typedData = message.string {
+                return sign(from: from, typedData: typedData, method: request.method, chainId: chainId)
+            } else if let message = message.ethereumData {
+                return sign(from: from, message: message, method: request.method, chainId: chainId)
+            } else {
+                return Promise(error: BitskiHTTPProvider.ProviderError.invalidRequest)
+            }
         } catch {
             // Some error forming an address from the params
             return Promise(error: error)
