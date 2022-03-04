@@ -14,6 +14,7 @@ enum BitskiTransactionKind: Equatable {
     case signTransaction
     case sign
     case signTypedData
+    case signTypedDataV4
     case other(String)
     
     init(methodName: String) {
@@ -26,6 +27,8 @@ enum BitskiTransactionKind: Equatable {
             self = .sign
         case "eth_signTypedData":
             self = .signTypedData
+        case "eth_signTypedData_v4":
+            self = .signTypedDataV4
         default:
             self = .other(methodName)
         }
@@ -37,6 +40,7 @@ enum BitskiTransactionKind: Equatable {
         case signTransaction = "ETH_SIGN_TRANSACTION"
         case sign = "ETH_SIGN"
         case signTypedData = "ETH_SIGN_TYPED_DATA"
+        case signTypedDataV4 = "ETH_SIGN_TYPED_DATA_V4"
     }
 
 }
@@ -60,6 +64,8 @@ extension BitskiTransactionKind: Codable {
             try container.encode("ETH_SIGN")
         case .signTypedData:
             try container.encode("ETH_SIGN_TYPED_DATA")
+        case .signTypedDataV4:
+            try container.encode("ETH_SIGN_TYPED_DATA_V4")
         case .other(let method):
             try container.encode(method.uppercased())
         }
