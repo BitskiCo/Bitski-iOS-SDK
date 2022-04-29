@@ -148,10 +148,10 @@ public class TransactionSigner: NetworkClient {
             // Release the instance of authorization agent
             self.currentAuthAgent = nil
             throw error
-        }.map { data throws -> RPCResponse<Result> in
+        }.map { data throws -> BitskiRPCResponse<Result> in
             // Release the instance of authorization agent
             self.currentAuthAgent = nil
-            return try self.decoder.decode(RPCResponse<Result>.self, from: data)
+            return try self.decoder.decode(BitskiRPCResponse<Result>.self, from: data)
         }.map { response throws -> Result in
             if let result = response.result {
                 return result
