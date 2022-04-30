@@ -136,7 +136,7 @@ public class BitskiHTTPProvider: NetworkClient, Web3Provider {
     private func sendRPCRequest<Params, Result>(request: RPCRequest<Params>, accessToken: String?, response: @escaping Web3ResponseCompletion<Result>) {
         firstly {
             self.sendRPCRequest(request: request, accessToken: accessToken)
-        }.done { (rpcResponse: BitskiRPCResponse<Result>) in
+        }.done { (rpcResponse: RPCResponse<Result>) in
             let result = Web3Response<Result>(rpcResponse: rpcResponse)
             response(result)
         }.catch { error in
@@ -145,13 +145,13 @@ public class BitskiHTTPProvider: NetworkClient, Web3Provider {
         }
     }
     
-    private func sendRPCRequest<Params, Result: Codable>(request: RPCRequest<Params>, accessToken: String?) -> Promise<BitskiRPCResponse<Result>> {
+    private func sendRPCRequest<Params, Result: Codable>(request: RPCRequest<Params>, accessToken: String?) -> Promise<RPCResponse<Result>> {
         return firstly {
             encode(body: request)
         }.then { body in
             self.sendRequest(url: self.rpcURL, accessToken: accessToken, method: "POST", body: body)
         }.map { data in
-            try self.decoder.decode(BitskiRPCResponse<Result>.self, from: data)
+            try self.decoder.decode(RPCResponse<Result>.self, from: data)
         }
     }
     
@@ -190,11 +190,11 @@ public class BitskiHTTPProvider: NetworkClient, Web3Provider {
             // Sign then send
             return firstly {
                 self.signer.signTransaction(request: request, network: network)
-            }.then { (data: EthereumData) -> Promise<BitskiRPCResponse<Result>> in
+            }.then { (data: EthereumData) -> Promise<RPCResponse<Result>> in
                 // We must forward the transaction when doing eth_sendTransaction
                 let request = RPCRequest(id: 0, jsonrpc: "2.0", method: "eth_sendRawTransaction", params: [data])
                 return self.sendRPCRequest(request: request, accessToken: accessToken)
-            }.compactMap { (rpcResponse: BitskiRPCResponse<Result>) -> Result? in
+            }.compactMap { (rpcResponse: RPCResponse<Result>) -> Result? in
                 return rpcResponse.result
             }
         case "eth_sign", "eth_signTypedData", "eth_signTypedData_v4", "personal_sign":
