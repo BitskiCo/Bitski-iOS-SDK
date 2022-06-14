@@ -102,6 +102,10 @@ public class Bitski: NSObject, BitskiAuthDelegate {
        return _authToken
     }
     
+    public var idToken: String {
+       return _idToken
+    }
+    
     /// OpenID Authority
     let issuer = URL(string: "https://account.bitski.com")!
     
@@ -129,6 +133,8 @@ public class Bitski: NSObject, BitskiAuthDelegate {
     private let signer: TransactionSigner
     
     private var _authToken: String
+    
+    private var _idToken: String
     
     /// Active authorization session
     private var authorizationFlowSession: OIDExternalUserAgentSession?
@@ -175,6 +181,8 @@ public class Bitski: NSObject, BitskiAuthDelegate {
         self.redirectURL = redirectURL
         self.signer = TransactionSigner(apiBaseURL: apiBaseURL, webBaseURL: webBaseURL, redirectURL: redirectURL, authorizationClass: authorizationClass)
         self._authToken = ""
+        self._idToken = ""
+
         super.init()
         self.signer.authDelegate = self
         // Read access token from cache if still authorized
@@ -348,22 +356,23 @@ public class Bitski: NSObject, BitskiAuthDelegate {
     // MARK: - BitskiAuthDelegate
     
     /// Called before every JSON RPC request to get a fresh access token if needed
-    func getCurrentAccessToken(completion: @escaping (String?, Error?) -> Void) {
+    func getCurrentAccessToken(completion: @escaping (String?, String?, Error?) -> Void) {
         guard let authState = authState else {
-            completion(nil, AuthenticationError.notLoggedIn)
+            completion(nil,nil, AuthenticationError.notLoggedIn)
             return
         }
-        authState.performAction { [weak self](accessToken, _, error) in
+        authState.performAction { [weak self](accessToken, idToken, error) in
             guard let self = self else {
-                completion(nil, error)
+                completion(nil,nil, error)
                 return
             }
-            if let accessToken = accessToken {
+            if let accessToken = accessToken, let idToken = idToken {
                 self._authToken = accessToken
-                completion(accessToken, nil)
+                self._idToken = idToken
+                completion(accessToken,idToken, nil)
             } else {
                 self.signOut()
-                completion(nil, error)
+                completion(nil,nil, error)
             }
         }
     }

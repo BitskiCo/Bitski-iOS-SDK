@@ -12,7 +12,7 @@ import PromiseKit
 
 
 protocol BitskiAuthDelegate: NSObjectProtocol {
-    func getCurrentAccessToken(completion: @escaping (String?, Error?) -> Void)
+    func getCurrentAccessToken(completion: @escaping (String?, String?, Error?) -> Void)
 }
 
 /// A custom Web3 HttpProvider that is specifically configured for use with Bitski.
@@ -106,7 +106,7 @@ public class BitskiHTTPProvider: NetworkClient, Web3Provider {
                 response(Web3Response<Result>(error: error))
                 return
             }
-            authDelegate.getCurrentAccessToken { accessToken, error in
+            authDelegate.getCurrentAccessToken { accessToken, idToken, error in
                 // Assert that the access token was received
                 guard let accessToken = accessToken else {
                     let err: Web3Response<Result>.Error = .requestFailed(ProviderError.notLoggedIn(error))
