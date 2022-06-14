@@ -127,7 +127,15 @@ public class TransactionSigner: NetworkClient {
             guard let authDelegate = authDelegate else {
                 throw SignerError.noDelegate
             }
-            authDelegate.getCurrentAccessToken(completion: resolver.resolve)
+            authDelegate.getCurrentAccessToken { accessToken, idToken, error in
+                if let error = error {
+                    resolver.reject(error)
+                } else if let accessToken = accessToken{
+                    resolver.fulfill(accessToken)
+                } else {
+                    resolver.reject(NetworkClient.Error.unknown)
+                }
+            }
         }
     }
     

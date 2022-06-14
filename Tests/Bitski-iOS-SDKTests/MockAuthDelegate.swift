@@ -12,11 +12,11 @@ import Foundation
 class MockAuthDelegate: NSObject, BitskiAuthDelegate {
     var isLoggedIn: Bool = true
     
-    func getCurrentAccessToken(completion: @escaping (String?, Error?) -> Void) {
+    func getCurrentAccessToken(completion: @escaping (String?,String?, Error?) -> Void) {
         if isLoggedIn {
-            completion("test-access-token", nil)
+            completion("test-access-token", nil,nil)
         } else {
-            completion(nil, Bitski.AuthenticationError.notLoggedIn)
+            completion(nil, nil, Bitski.AuthenticationError.notLoggedIn)
         }
     }
 }

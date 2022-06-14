@@ -356,23 +356,23 @@ public class Bitski: NSObject, BitskiAuthDelegate {
     // MARK: - BitskiAuthDelegate
     
     /// Called before every JSON RPC request to get a fresh access token if needed
-    func getCurrentAccessToken(completion: @escaping (String?, Error?) -> Void) {
+    func getCurrentAccessToken(completion: @escaping (String?, String?, Error?) -> Void) {
         guard let authState = authState else {
-            completion(nil, AuthenticationError.notLoggedIn)
+            completion(nil,nil, AuthenticationError.notLoggedIn)
             return
         }
         authState.performAction { [weak self](accessToken, idToken, error) in
             guard let self = self else {
-                completion(nil, error)
+                completion(nil,nil, error)
                 return
             }
             if let accessToken = accessToken, let idToken = idToken {
                 self._authToken = accessToken
                 self._idToken = idToken
-                completion(accessToken, nil)
+                completion(accessToken,idToken, nil)
             } else {
                 self.signOut()
-                completion(nil, error)
+                completion(nil,nil, error)
             }
         }
     }

@@ -17,6 +17,8 @@ public class NetworkClient {
         case unexpectedResponse(Swift.Error?)
         /// The server returned an unexpected response code
         case invalidResponseCode
+        
+        case unknown
     }
     
     /// Internal queue for handling requests
