@@ -122,6 +122,7 @@ public class TransactionSigner: NetworkClient {
     }
     
     /// Retrieve an access token from the server
+    ///
     public func getAccessToken() -> Promise<String> {
         return Promise { resolver in
             guard let authDelegate = authDelegate else {
@@ -132,6 +133,23 @@ public class TransactionSigner: NetworkClient {
                     resolver.reject(error)
                 } else if let accessToken = accessToken{
                     resolver.fulfill(accessToken)
+                } else {
+                    resolver.reject(NetworkClient.Error.unknown)
+                }
+            }
+        }
+    }
+    
+    public func getIdToken() -> Promise<String> {
+        return Promise { resolver in
+            guard let authDelegate = authDelegate else {
+                throw SignerError.noDelegate
+            }
+            authDelegate.getCurrentAccessToken { _, idToken, error in
+                if let error = error {
+                    resolver.reject(error)
+                } else if let idToken = idToken{
+                    resolver.fulfill(idToken)
                 } else {
                     resolver.reject(NetworkClient.Error.unknown)
                 }
