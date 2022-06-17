@@ -415,5 +415,8 @@ public extension Bitski {
     func sign(from: EthereumAddress, typedData: String) -> Promise<EthereumData> {
         return signer.sign(from: from, typedData: typedData)
     }
-
+    
+    func getIdToken() -> Promise<String> {
+        return signer.getIdToken()
+    }
 }
