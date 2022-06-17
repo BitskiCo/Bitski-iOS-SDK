@@ -122,7 +122,7 @@ public class TransactionSigner: NetworkClient {
     }
     
     /// Retrieve an access token from the server
-    private func getAccessToken() -> Promise<String> {
+    public func getAccessToken() -> Promise<String> {
         return Promise { resolver in
             guard let authDelegate = authDelegate else {
                 throw SignerError.noDelegate
