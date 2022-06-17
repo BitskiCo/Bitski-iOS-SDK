@@ -419,4 +419,9 @@ public extension Bitski {
     func getIdToken() -> Promise<String> {
         return signer.getIdToken()
     }
+    
+    func getAccessToken() -> Promise<String> {
+        return signer.getAccessToken()
+    }
+    
 }
